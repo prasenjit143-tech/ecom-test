@@ -34,21 +34,13 @@ function App() {
             <Route path="/testimonial" element={<Testimonial />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/cart" element={<Cart />} />
-            <Route path="/checkout" element={
-              <PrivateRoute>
-                <Chekout />
-              </PrivateRoute>
-            } />
-
+            <Route element={<PrivateRoute />}>
+              <Route path="/checkout" element={<Chekout />} />
+              <Route path="/profile" element={<Profile />} />
+            </Route>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/forgot-password" element={<Forget_pass />} />
-
-            <Route path="/profile" element={
-              <PrivateRoute>
-                <Profile />
-              </PrivateRoute>
-            } />
           </Routes>
           <Footer />
         </BrowserRouter>
