@@ -13,7 +13,7 @@ function Login() {
     setLoading(true);
 
     try {
-      const response = await fetch("http://localhost:5000/api/login", {
+      const response = await fetch("http://localhost:5001/api/user/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -22,10 +22,10 @@ function Login() {
       });
 
       const data = await response.json();
-
+      // console.log(data);
       if (response.ok) {
         // Assuming the API returns a token
-        localStorage.setItem("token", data.token);
+        localStorage.setItem("token", data.accToken);
         Swal.fire({
           title: 'Success!',
           text: 'Login successful!',

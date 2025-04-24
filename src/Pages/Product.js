@@ -1,7 +1,41 @@
+import React, { useEffect, useState } from "react";
+
 function Product() {
+  const [products, setProducts] = useState([]);
+  const [cart, setCart] = useState([]);
+
+  // Fetch products
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    fetch("http://localhost:5001/api/product/getProducts", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setProducts(data.data.product);
+      })
+      .catch((error) => {
+        console.error("Error fetching products:", error);
+      });
+  }, []);
+
+  // Add to cart handler
+  const handleAddToCart = (product) => {
+    setCart((prevCart) => [...prevCart, product]);
+    console.log("Cart:", [...cart, product]);
+  };
+
   return (
     <>
-    
       {/* inner page section */}
       <section className="inner_page_head">
         <div className="container_fuild">
@@ -14,7 +48,7 @@ function Product() {
           </div>
         </div>
       </section>
-      {/* end inner page section */}
+
       {/* product section */}
       <section className="product_section layout_padding">
         <div className="container">
@@ -23,267 +57,62 @@ function Product() {
               Our <span>products</span>
             </h2>
           </div>
+
           <div className="row">
-            <div className="col-sm-6 col-md-4 col-lg-3">
-              <div className="box">
-                <div className="option_container">
-                  <div className="options">
-                    <a href className="option1">
-                      Men's Shirt
-                    </a>
-                    <a href className="option2">
-                      Buy Now
-                    </a>
+            {products.map((product, index) => (
+              <div key={index} className="col-sm-6 col-md-4 col-lg-3">
+                <div className="box">
+                  <div className="option_container">
+                    <div className="options">
+                      <button
+                        onClick={() => handleAddToCart(product)}
+                        className="option1"
+                      >
+                        Add To Cart
+                      </button>
+                      <a href="#" className="option2">
+                        Buy Now
+                      </a>
+                    </div>
+                  </div>
+                  <div className="img-box">
+                    <img
+                      src={product.productFeaturePic}
+                      alt={product.name}
+                      style={{ maxHeight: "200px", objectFit: "cover" }}
+                    />
+                  </div>
+                  <div className="detail-box">
+                    <h5>{product.name}</h5>
+                    <h6>${product.price}</h6>
                   </div>
                 </div>
-                <div className="img-box">
-                  <img src={`${process.env.PUBLIC_URL}/assets/images/p1.png`} alt />
-                </div>
-                <div className="detail-box">
-                  <h5>Men's Shirt</h5>
-                  <h6>$75</h6>
-                </div>
               </div>
-            </div>
-            <div className="col-sm-6 col-md-4 col-lg-3">
-              <div className="box">
-                <div className="option_container">
-                  <div className="options">
-                    <a href className="option1">
-                      Add To Cart
-                    </a>
-                    <a href className="option2">
-                      Buy Now
-                    </a>
-                  </div>
-                </div>
-                <div className="img-box">
-                  <img src={`${process.env.PUBLIC_URL}/assets/images/p2.png`} alt />
-                </div>
-                <div className="detail-box">
-                  <h5>Men's Shirt</h5>
-                  <h6>$80</h6>
-                </div>
-              </div>
-            </div>
-            <div className="col-sm-6 col-md-4 col-lg-3">
-              <div className="box">
-                <div className="option_container">
-                  <div className="options">
-                    <a href className="option1">
-                      Add To Cart
-                    </a>
-                    <a href className="option2">
-                      Buy Now
-                    </a>
-                  </div>
-                </div>
-                <div className="img-box">
-                  <img src={`${process.env.PUBLIC_URL}/assets/images/p3.png`} alt />
-                </div>
-                <div className="detail-box">
-                  <h5>Women's Dress</h5>
-                  <h6>$68</h6>
-                </div>
-              </div>
-            </div>
-            <div className="col-sm-6 col-md-4 col-lg-3">
-              <div className="box">
-                <div className="option_container">
-                  <div className="options">
-                    <a href className="option1">
-                      Add To Cart
-                    </a>
-                    <a href className="option2">
-                      Buy Now
-                    </a>
-                  </div>
-                </div>
-                <div className="img-box">
-                  <img src={`${process.env.PUBLIC_URL}/assets/images/p4.png`} alt />
-                </div>
-                <div className="detail-box">
-                  <h5>Women's Dress</h5>
-                  <h6>$70</h6>
-                </div>
-              </div>
-            </div>
-            <div className="col-sm-6 col-md-4 col-lg-3">
-              <div className="box">
-                <div className="option_container">
-                  <div className="options">
-                    <a href className="option1">
-                      Add To Cart
-                    </a>
-                    <a href className="option2">
-                      Buy Now
-                    </a>
-                  </div>
-                </div>
-                <div className="img-box">
-                  <img src={`${process.env.PUBLIC_URL}/assets/images/p5.png`} alt />
-                </div>
-                <div className="detail-box">
-                  <h5>Women's Dress</h5>
-                  <h6>$75</h6>
-                </div>
-              </div>
-            </div>
-            <div className="col-sm-6 col-md-4 col-lg-3">
-              <div className="box">
-                <div className="option_container">
-                  <div className="options">
-                    <a href className="option1">
-                      Add To Cart
-                    </a>
-                    <a href className="option2">
-                      Buy Now
-                    </a>
-                  </div>
-                </div>
-                <div className="img-box">
-                  <img src={`${process.env.PUBLIC_URL}/assets/images/p6.png`} alt />
-                </div>
-                <div className="detail-box">
-                  <h5>Women's Dress</h5>
-                  <h6>$58</h6>
-                </div>
-              </div>
-            </div>
-            <div className="col-sm-6 col-md-4 col-lg-3">
-              <div className="box">
-                <div className="option_container">
-                  <div className="options">
-                    <a href className="option1">
-                      Add To Cart
-                    </a>
-                    <a href className="option2">
-                      Buy Now
-                    </a>
-                  </div>
-                </div>
-                <div className="img-box">
-                  <img src={`${process.env.PUBLIC_URL}/assets/images/p7.png`} alt />
-                </div>
-                <div className="detail-box">
-                  <h5>Women's Dress</h5>
-                  <h6>$80</h6>
-                </div>
-              </div>
-            </div>
-            <div className="col-sm-6 col-md-4 col-lg-3">
-              <div className="box">
-                <div className="option_container">
-                  <div className="options">
-                    <a href className="option1">
-                      Add To Cart
-                    </a>
-                    <a href className="option2">
-                      Buy Now
-                    </a>
-                  </div>
-                </div>
-                <div className="img-box">
-                  <img src={`${process.env.PUBLIC_URL}/assets/images/p8.png`} alt />
-                </div>
-                <div className="detail-box">
-                  <h5>Men's Shirt</h5>
-                  <h6>$65</h6>
-                </div>
-              </div>
-            </div>
-            <div className="col-sm-6 col-md-4 col-lg-3">
-              <div className="box">
-                <div className="option_container">
-                  <div className="options">
-                    <a href className="option1">
-                      Add To Cart
-                    </a>
-                    <a href className="option2">
-                      Buy Now
-                    </a>
-                  </div>
-                </div>
-                <div className="img-box">
-                  <img src={`${process.env.PUBLIC_URL}/assets/images/p9.png`} alt />
-                </div>
-                <div className="detail-box">
-                  <h5>Men's Shirt</h5>
-                  <h6>$65</h6>
-                </div>
-              </div>
-            </div>
-            <div className="col-sm-6 col-md-4 col-lg-3">
-              <div className="box">
-                <div className="option_container">
-                  <div className="options">
-                    <a href className="option1">
-                      Add To Cart
-                    </a>
-                    <a href className="option2">
-                      Buy Now
-                    </a>
-                  </div>
-                </div>
-                <div className="img-box">
-                  <img src={`${process.env.PUBLIC_URL}/assets/images/p10.png`} alt />
-                </div>
-                <div className="detail-box">
-                  <h5>Men's Shirt</h5>
-                  <h6>$65</h6>
-                </div>
-              </div>
-            </div>
-            <div className="col-sm-6 col-md-4 col-lg-3">
-              <div className="box">
-                <div className="option_container">
-                  <div className="options">
-                    <a href className="option1">
-                      Add To Cart
-                    </a>
-                    <a href className="option2">
-                      Buy Now
-                    </a>
-                  </div>
-                </div>
-                <div className="img-box">
-                  <img src={`${process.env.PUBLIC_URL}/assets/images/p11.png`} alt />
-                </div>
-                <div className="detail-box">
-                  <h5>Men's Shirt</h5>
-                  <h6>$65</h6>
-                </div>
-              </div>
-            </div>
-            <div className="col-sm-6 col-md-4 col-lg-3">
-              <div className="box">
-                <div className="option_container">
-                  <div className="options">
-                    <a href className="option1">
-                      Add To Cart
-                    </a>
-                    <a href className="option2">
-                      Buy Now
-                    </a>
-                  </div>
-                </div>
-                <div className="img-box">
-                  <img src={`${process.env.PUBLIC_URL}/assets/images/p12.png`} alt />
-                </div>
-                <div className="detail-box">
-                  <h5>Women's Dress</h5>
-                  <h6>$65</h6>
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
+
           <div className="btn-box">
-            <a href>View All products</a>
+            <a href="#">View All products</a>
           </div>
+
+          {/* Cart Summary (Optional) */}
+          {cart.length > 0 && (
+            <div className="mt-4 p-3 border">
+              <h4>🛒 Cart Summary</h4>
+              <ul>
+                {cart.map((item, i) => (
+                  <li key={i}>
+                    {item.name} - ${item.price}
+                  </li>
+                ))}
+              </ul>
+              <strong>Total Items: {cart.length}</strong>
+            </div>
+          )}
         </div>
       </section>
-      {/* end product section */}
     </>
   );
 }
+
 export default Product;
