@@ -11,7 +11,7 @@ import Product from './Pages/Product';
 import Testimonial from './Pages/Testimonials';
 import Cart from './Pages/Cart';
 import Chekout from './Pages/Checkout';
-
+import OrderDetails from './Pages/OrderDetails';
 import Login from './Component/Auth/Login';
 import Register from './Component/Auth/Register';
 import Forget_pass from './Component/Auth/Forget-pass';
@@ -34,10 +34,11 @@ function App() {
             <Route path="/testimonial" element={<Testimonial />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/cart" element={<Cart />} />
-            <Route element={<PrivateRoute />}>
+            {/* <Route element={<PrivateRoute />}> */}
               <Route path="/checkout" element={<Chekout />} />
+              <Route path="/order/details/:id" element={<OrderDetails />} />
               <Route path="/profile" element={<Profile />} />
-            </Route>
+            {/* </Route> */}
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/forgot-password" element={<Forget_pass />} />

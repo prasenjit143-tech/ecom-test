@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { getOrCreateCartId } from '../Utils/cartUtils';
+import axios from 'axios';
 
 function Product() {
   const [products, setProducts] = useState([]);
@@ -28,10 +30,28 @@ function Product() {
       });
   }, []);
 
-  // Add to cart handler
-  const handleAddToCart = (product) => {
-    setCart((prevCart) => [...prevCart, product]);
-    console.log("Cart:", [...cart, product]);
+  const handleAddToCart = async (product) => {
+    const token = localStorage.getItem('token');
+    let setcartId = null;
+    const parameter = { productId: product._id };
+    if(!token){
+      setcartId = getOrCreateCartId();
+      const parameter = { productId: product._id, setcartId };
+    }
+
+    const headers = token ? { Authorization: `Bearer ${token}` } : {};
+
+    try {
+      const response = await axios.post(
+        'http://localhost:5001/api/cart/createCart',
+         parameter,
+        { headers }
+      );
+      alert(response.data.message);
+    } catch (error) {
+      alert(error?.response?.data?.error || "Something went wrong");
+      console.error("Error adding product to cart:", error);
+    }
   };
 
   return (
@@ -70,7 +90,7 @@ function Product() {
                       >
                         Add To Cart
                       </button>
-                      <a href="#" className="option2">
+                      <a href="/" className="option2">
                         Buy Now
                       </a>
                     </div>
@@ -95,20 +115,6 @@ function Product() {
             <a href="#">View All products</a>
           </div>
 
-          {/* Cart Summary (Optional) */}
-          {cart.length > 0 && (
-            <div className="mt-4 p-3 border">
-              <h4>🛒 Cart Summary</h4>
-              <ul>
-                {cart.map((item, i) => (
-                  <li key={i}>
-                    {item.name} - ${item.price}
-                  </li>
-                ))}
-              </ul>
-              <strong>Total Items: {cart.length}</strong>
-            </div>
-          )}
         </div>
       </section>
     </>
