@@ -1,8 +1,12 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
-function Forget_pass() {
+function ResetPassword() {
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -10,26 +14,40 @@ function Forget_pass() {
 
     try {
       const response = await fetch(
-        "http://localhost:5001/api/user/forget-password",
+        "http://localhost:5001/api/user/reset-password",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ email }),
+          body: JSON.stringify({ email, password }),
         }
       );
 
       const data = await response.json();
-
+      // console.log(data);
       if (response.ok) {
-        alert("Password reset instructions sent to your email.");
+        // Assuming the API returns a token
+        localStorage.setItem("token", data.accToken);
+        Swal.fire({
+          title: "Success!",
+          text: "Login successful!",
+          icon: "success",
+          confirmButtonText: "OK",
+        });
+        navigate("/login"); // redirect on success
       } else {
-        alert(data.message || "Something went wrong. Please try again.");
+        // alert(data.message || "Login failed");
+        Swal.fire({
+          title: "Error!",
+          text: data.message || "Login failed!",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
       }
     } catch (error) {
-      console.error("Forgot password error:", error);
-      alert("An error occurred. Please try again later.");
+      console.error("Login error:", error);
+      alert("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -43,14 +61,14 @@ function Forget_pass() {
           <div className="row">
             <div className="col-md-12">
               <div className="full">
-                <h3>Forgot password</h3>
+                <h3>Reset your Password</h3>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* form section */}
+      {/* login form section */}
       <section className="why_section layout_padding">
         <div className="container">
           <div className="row">
@@ -67,8 +85,16 @@ function Forget_pass() {
                       required
                     />
                     <input
+                      type="password"
+                      placeholder="Enter password"
+                      name="password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      required
+                    />
+                    <input
                       type="submit"
-                      value={loading ? "Sending..." : "Submit"}
+                      value={loading ? "resetting in..." : "Reset Password"}
                       disabled={loading}
                     />
                   </fieldset>
@@ -82,4 +108,4 @@ function Forget_pass() {
   );
 }
 
-export default Forget_pass;
+export default ResetPassword;
