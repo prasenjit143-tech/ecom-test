@@ -86,7 +86,7 @@ const [formData, setFormData] = useState({
       console.log(response.data);
       const orderId = response.data?.order?._id;
       if (orderId) {
-        navigate(`/order/details/${orderId}`);
+        navigate(`/order-details/${orderId}`);
       }
       // You can redirect to the order confirmation page if needed
     } catch (error) {

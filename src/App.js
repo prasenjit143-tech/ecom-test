@@ -36,7 +36,7 @@ function App() {
             <Route path="/cart" element={<Cart />} />
             {/* <Route element={<PrivateRoute />}> */}
               <Route path="/checkout" element={<Chekout />} />
-              <Route path="/order/details/:id" element={<OrderDetails />} />
+              <Route path="/order-details/:id" element={<OrderDetails />} />
               <Route path="/profile" element={<Profile />} />
             {/* </Route> */}
             <Route path="/login" element={<Login />} />
