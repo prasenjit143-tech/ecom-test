@@ -84,7 +84,7 @@ const Cart = ({ cart }) => {
       {cartItems.map((item) => (
         <div key={item.id} className="cart-item">
           <div className="item-details">
-            <img src={item.imageUrl || `${process.env.PUBLIC_URL}/assets/images/p1.png`} alt={item.name} />
+            <img src={item.productFeaturePic || `${process.env.PUBLIC_URL}/assets/images/p1.png`} alt={item.name} />
             <div>
               <h4>{item.name}</h4>
               <div className="item-price">${item.price.toFixed(2)}</div>
