@@ -1,3 +1,5 @@
+import Navber from "./Navbar";
+
 function Profile() {
   return (
     <>
@@ -16,31 +18,7 @@ function Profile() {
       
       {/* end why section */}
       <div className="dashboard">
-        <aside className="sidebar">
-          <h2 className="logo">MyDashboard</h2>
-          <nav>
-            <ul>
-              <li>
-                <a href="/dashboard">🏠 Dashboard</a>
-              </li>
-              <li>
-                <a href="/profile">👤 Profile</a>
-              </li>
-              <li>
-                <a href="/wishlist">❤ Wishlist</a>
-              </li>
-              <li>
-                <a href="/order/details/">📦 Orders List</a>
-              </li>
-              <li>
-                <a href="#">⚙️ Settings</a>
-              </li>
-              <li>
-                <a href="#">🚪 Logout</a>
-              </li>
-            </ul>
-          </nav>
-        </aside>
+        <Navber />
         <main className="main-content">
           <header>
             <h1>Welcome, User</h1>
