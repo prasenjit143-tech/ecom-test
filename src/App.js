@@ -11,7 +11,7 @@ import Product from './Pages/Product';
 import Testimonial from './Pages/Testimonials';
 import Cart from './Pages/Cart';
 import Chekout from './Pages/Checkout';
-import OrderDetails from './Pages/OrderDetails';
+import OrderDetails from './Component/Dashboard/OrderDetails';
 import Login from './Component/Auth/Login';
 import Register from './Component/Auth/Register';
 import Forget_pass from './Component/Auth/Forget-pass';
@@ -19,6 +19,8 @@ import Profile from './Component/Dashboard/Profile';
 
 import { AuthProvider } from "./Context/AuthContext";
 import PrivateRoute from "./Utils/PrivateRoute";
+import Dashboard from "./Component/Dashboard/Dashboard";
+import Wishlist from "./Component/Dashboard/Wishlist";
 
 function App() {
   return (
@@ -36,8 +38,11 @@ function App() {
             <Route path="/cart" element={<Cart />} />
             {/* <Route element={<PrivateRoute />}> */}
               <Route path="/checkout" element={<Chekout />} />
-              <Route path="/order/details/:id" element={<OrderDetails />} />
+              <Route path="/order/details" element={<OrderDetails />} />
+              {/* <Route path="/order/details/:id" element={<OrderDetails />} /> */}
               <Route path="/profile" element={<Profile />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/wishlist" element={<Wishlist />} />
             {/* </Route> */}
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
