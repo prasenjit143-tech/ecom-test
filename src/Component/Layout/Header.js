@@ -1,6 +1,8 @@
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from "react-router-dom";
+import { useAuth } from "../../Context/AuthContext";
 
 function Header() {
+  const { isAuthenticated, userInfo } = useAuth();
   return (
     <>
       {/* header section strats */}
@@ -52,11 +54,15 @@ function Header() {
                   <ul className="dropdown-menu">
                     <li>
                       {/* <a href="about">About</a> */}
-                      <NavLink to='about' activeClassName="active">about</NavLink>
+                      <NavLink to="about" activeClassName="active">
+                        about
+                      </NavLink>
                     </li>
                     <li>
                       {/* <a href="testimonial">Testimonial</a> */}
-                      <NavLink to='testimonial' activeClassName="active">Testimonial</NavLink>
+                      <NavLink to="testimonial" activeClassName="active">
+                        Testimonial
+                      </NavLink>
                     </li>
                   </ul>
                 </li>
@@ -64,7 +70,13 @@ function Header() {
                   {/* <a className="nav-link" href="product">
                     Products
                   </a> */}
-                      <NavLink to='product' className="nav-link" activeClassName="active">Product</NavLink>
+                  <NavLink
+                    to="product"
+                    className="nav-link"
+                    activeClassName="active"
+                  >
+                    Product
+                  </NavLink>
                 </li>
                 <li className="nav-item">
                   <a className="nav-link" href="blogs">
@@ -141,6 +153,22 @@ function Header() {
                     <i className="fa fa-search" aria-hidden="true" />
                   </button>
                 </form>
+                <li className="nav-item">
+                  {isAuthenticated ? (
+                    <div className="nav-link profile-link d-flex align-items-center">
+                      Welcome {userInfo.name}
+                      <img
+                        src={userInfo.profilePic} // replace with the actual profile image URL
+                        alt="DP"
+                        className="profile-image"
+                      />
+                    </div>
+                  ) : (
+                    <Link className="nav-link" to="/login">
+                      Login
+                    </Link>
+                  )}
+                </li>
               </ul>
             </div>
           </nav>

@@ -1,31 +1,39 @@
-
 import React, { createContext, useContext, useEffect, useState } from "react";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [token, setToken] = useState(localStorage.getItem("token"));
-  const [isAuthenticated, setIsAuthenticated] = useState(!!token);
-
-  const login = (jwtToken) => {
-    localStorage.setItem("token", jwtToken);
-    setToken(jwtToken);
-    setIsAuthenticated(true);
-  };
-
-  const logout = () => {
-    localStorage.removeItem("token");
-    setToken(null);
-    setIsAuthenticated(false);
-  };
+  const [isAuthenticated, setIsAuthenticated] = useState(null);
+  const [userInfo, setUserInfo] = useState(null);
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
-    setIsAuthenticated(!!storedToken);
+    if (storedToken) {
+      getUser(storedToken);
+    }
   }, []);
 
+  const getUser = async (token) => {
+    try {
+      const response = await fetch("http://localhost:5001/api/user/userInfo", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await response.json();
+      setUserInfo(data?.user);
+      setIsAuthenticated(true);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+      setUserInfo(null);
+      setIsAuthenticated(false);
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ token, isAuthenticated, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, userInfo }}>
       {children}
     </AuthContext.Provider>
   );
