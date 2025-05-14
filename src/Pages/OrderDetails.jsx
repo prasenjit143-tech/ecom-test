@@ -18,6 +18,7 @@ function OrderDetails() {
         setOrderData(res.data.data);
         console.log(res.data.data);
       } catch (err) {
+        setLoading(false);
         console.error('Error fetching order', err);
       } finally {
         setLoading(false);
@@ -27,8 +28,12 @@ function OrderDetails() {
     fetchOrder();
   }, [id]);
 
-  if (loading || !orderData) {
+  if (loading) {
     return <div style={{ textAlign: 'center', marginTop: '50px' }}>Loading order details...</div>;
+  }
+
+  if (!orderData) {
+    return <div style={{ textAlign: 'center', marginTop: '50px' }}>NO Order Found</div>;
   }
 
   const containerStyle = {
