@@ -16,6 +16,7 @@ function OrderDetails() {
           },
         });
         setOrderData(res.data.data);
+        console.log(res.data.data);
       } catch (err) {
         console.error('Error fetching order', err);
       } finally {
@@ -29,9 +30,6 @@ function OrderDetails() {
   if (loading || !orderData) {
     return <div style={{ textAlign: 'center', marginTop: '50px' }}>Loading order details...</div>;
   }
-
-  
-  console.log(orderData);
 
   const containerStyle = {
     maxWidth: '800px',
@@ -105,7 +103,8 @@ function OrderDetails() {
         {Array.isArray(orderData.items) && orderData.items.length > 0 ? (
         orderData.items.map((item) => (
             <div className="order-item" key={item._id}>
-            <span>Product ID: {item.product}</span>
+            <span>Product ID: {item.product._id}    </span>
+            
             <span>Qty: {item.quantity}</span>
             </div>
         ))
