@@ -94,6 +94,9 @@ function OrderDetails() {
         <div>Method: {orderData.paymentMethod}</div>
         <div>Shipping Charge: ₹{orderData.shippingCharge}</div>
         <div style={{ fontWeight: 'bold', marginTop: '10px' }}>
+          Discount Amount: ₹{orderData.discountAmount || 'N/A'}
+        </div>
+        <div style={{ fontWeight: 'bold', marginTop: '10px' }}>
           Total: ₹{orderData.totalAmount || 'N/A'}
         </div>
       </div>

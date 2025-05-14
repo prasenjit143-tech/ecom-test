@@ -9,6 +9,11 @@ function Chekout() {
 const navigate = useNavigate();
 
 const [cartItems, setCartItems] = useState([]);
+const [couponCode, setCouponCode] = useState('');
+const [couponMessage, setCouponMessage] = useState('');
+const [errcouponMessage, setErrCouponMessage] = useState('');
+const [discountAmount, setDiscountAmount] = useState(0.00);
+const [totalAmount, setTotalAmount] = useState(0.00);
 const [quantities, setQuantities] = useState({});
 const [formData, setFormData] = useState({
   shippingAddress: '',
@@ -49,13 +54,21 @@ const [formData, setFormData] = useState({
     setQuantities((prev) => ({ ...prev, [productId]: qty }));
   }; 
   
-  const getTotal = () => {
-    return cartItems.reduce((total, item) => {
+  const getsubTotal = () => {
+    const totalAmt = cartItems.reduce((total, item) => {
       const qty = quantities[item._id] || 1;
       return total + item.price * qty;
     }, 0).toFixed(2);
+
+    return totalAmt;
   };
 
+  const gettotalAmt = () => {
+    const totalAmt = getsubTotal() - discountAmount;
+    return totalAmt;
+    // setTotalAmount(totalAmt)
+  }
+  
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -73,6 +86,7 @@ const [formData, setFormData] = useState({
           zipcode: formData.zipcode,
           city: formData.city,
           country: formData.country,
+          discountAmount:discountAmount,
           paymentMethod: formData.paymentMethod,
         },
         {
@@ -95,6 +109,34 @@ const [formData, setFormData] = useState({
     }
   };
 
+  const applyCoupon = async () => {
+    setCouponMessage('');
+    setErrCouponMessage('');
+    try {
+      const res = await axios.post(
+        'http://localhost:5001/api/coupon/validate',
+        { code: couponCode,
+          cartTotal:getsubTotal()
+         },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        }
+      );
+
+      if (res.status === 200) {
+        setDiscountAmount((res.data.discount).toFixed(2));
+        setCouponMessage(`Coupon applied! You saved ₹${res.data.discount}`);
+        setTotalAmount(getsubTotal() - res.data.discount);
+      } else {
+        setErrCouponMessage(res.data.message || 'Invalid coupon');
+      }
+    } catch (err) {
+      console.error('Error applying coupon', err);
+      setErrCouponMessage(err.response.data.message);
+    }
+  };
 
   return (
     <div className="checkout-container">
@@ -173,6 +215,25 @@ const [formData, setFormData] = useState({
 
         {/* RIGHT SECTION */}
         <div className="form-right">
+          <div className='gap-2'>
+            <label>Apply Coupon</label>
+            <input
+              type="text"
+              className='col-9'
+              name="coupon_code"
+              placeholder="Enter coupon code"
+              value={couponCode}
+              onChange={(e) => setCouponCode(e.target.value)}
+              required
+            />
+
+            <button className="col-3 btn-checkout" onClick={applyCoupon}>
+              Apply
+            </button>
+            {couponMessage && <p style={{ color: 'green' }}>{couponMessage}</p>}
+            {errcouponMessage && <p style={{ color: 'red' }}>{errcouponMessage}</p>}
+          </div>
+
           <h3>Order Summary</h3>
           <div className="order-summary">
             {cartItems.map((item) => (
@@ -181,11 +242,20 @@ const [formData, setFormData] = useState({
                 <span>${item.price}</span>
               </div>
             ))}
+
             <div className="summary-total">
-              <span>Total</span>
-              <span>${getTotal()}</span>
+              <span>Sub Total: ${getsubTotal()}</span>
+            </div>
+
+            <div className="summary-total">
+              <span>Discount: ${discountAmount}</span>
+            </div>
+
+            <div className="summary-total">
+              <span>Total: ${gettotalAmt()}</span>
             </div>
           </div>
+
           <button className="btn-checkout" onClick={placeOrder}>
             Place Order
           </button>
