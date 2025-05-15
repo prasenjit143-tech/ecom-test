@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { getOrCreateCartId } from '../Utils/cartUtils';
-import axios from 'axios';
+import { getOrCreateCartId } from "../Utils/cartUtils";
+import axios from "axios";
 
 function Product() {
   const [products, setProducts] = useState([]);
   const [cart, setCart] = useState([]);
+  const [token, setToken] = useState([]);
 
   // Fetch products
   useEffect(() => {
     const token = localStorage.getItem("token");
+    setToken(token);
     fetch("http://localhost:5001/api/product/getProducts", {
       method: "GET",
       headers: {
@@ -23,6 +25,7 @@ function Product() {
         return response.json();
       })
       .then((data) => {
+        console.log(data.data.product);
         setProducts(data.data.product);
       })
       .catch((error) => {
@@ -31,10 +34,10 @@ function Product() {
   }, []);
 
   const handleAddToCart = async (product) => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     let setcartId = null;
     const parameter = { productId: product._id };
-    if(!token){
+    if (!token) {
       setcartId = getOrCreateCartId();
       const parameter = { productId: product._id, setcartId };
     }
@@ -43,8 +46,8 @@ function Product() {
 
     try {
       const response = await axios.post(
-        'http://localhost:5001/api/cart/createCart',
-         parameter,
+        "http://localhost:5001/api/cart/createCart",
+        parameter,
         { headers }
       );
       alert(response.data.message);
@@ -112,9 +115,12 @@ function Product() {
           </div>
 
           <div className="btn-box">
-            <a href="#">View All products</a>
+            {token ? (
+              <a href="#">View All products</a>
+            ) : (
+              <p>Please login first</p>
+            )}
           </div>
-
         </div>
       </section>
     </>
