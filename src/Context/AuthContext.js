@@ -11,6 +11,8 @@ export const AuthProvider = ({ children }) => {
     const storedToken = localStorage.getItem("token");
     if (storedToken) {
       getUser(storedToken);
+    } else {
+      setIsAuthenticated(false);
     }
   }, [message]);
 
