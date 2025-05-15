@@ -1,0 +1,139 @@
+/* Profile CSS */
+
+.dashboard {
+    background-color: #f7f7f7;
+    padding: 20px;
+}
+
+.cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    padding: 10px;
+    column-gap: 10px;
+    row-gap: 20px;
+}
+
+.card {
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    flex: 1;
+}
+
+.account-settings {
+    margin-top: 40px;
+    padding: 20px;
+    background-color: #f7f7f7;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.account-settings h2 {
+    margin-top: 0;
+}
+
+.account-setting {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid #ddd;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.account-setting-open {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    justify-content: space-between;
+    cursor: pointer;
+    background-color: #ffffffAA;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+.account-setting:hover {
+    background-color: #f2f2f2;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+.account-setting-icon {
+    font-size: 30px;
+    margin-right: 10px;
+}
+
+.account-setting-text {
+    flex: 1;
+}
+
+.account-setting-text h3 {
+    margin-top: 0;
+}
+
+.account-setting-arrow {
+    font-size: 24px;
+    /* color: #4CAF50; */
+}
+
+.edit-profile-form {
+    margin-top: 5px;
+    padding: 20px;
+    background-color: #ffffffAA;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.edit-profile-form fieldset {
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+.edit-profile-form label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.edit-profile-form input[type="text"],
+.edit-profile-form input[type="email"] {
+    width: 100%;
+    height: 40px;
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.update-profile-btn {
+    background-color: #4CAF50;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.update-profile-btn:hover {
+    background-color: #3e8e41;
+}
+
+.profile-picture {
+    text-align: center;
+}
+
+.profile-picture img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+.profile-picture input[type="file"] {
+    margin-top: 10px;
+}
