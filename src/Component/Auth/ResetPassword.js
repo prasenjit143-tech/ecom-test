@@ -1,28 +1,28 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import { useAuth } from "../../Context/AuthContext";
 
-function Login() {
-  const navigate = useNavigate();
-  const { setMessage } = useAuth();
+function ResetPassword() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-      const response = await fetch("http://localhost:5001/api/user/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({ email, password }),
-      });
+      const response = await fetch(
+        "http://localhost:5001/api/user/reset-password",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, password }),
+        }
+      );
 
       const data = await response.json();
       // console.log(data);
@@ -35,8 +35,7 @@ function Login() {
           icon: "success",
           confirmButtonText: "OK",
         });
-        setMessage("Login successful!");
-        navigate("/profile"); // redirect on success
+        navigate("/login"); // redirect on success
       } else {
         // alert(data.message || "Login failed");
         Swal.fire({
@@ -62,7 +61,7 @@ function Login() {
           <div className="row">
             <div className="col-md-12">
               <div className="full">
-                <h3>Login</h3>
+                <h3>Reset your Password</h3>
               </div>
             </div>
           </div>
@@ -95,7 +94,7 @@ function Login() {
                     />
                     <input
                       type="submit"
-                      value={loading ? "Logging in..." : "Login"}
+                      value={loading ? "resetting in..." : "Reset Password"}
                       disabled={loading}
                     />
                   </fieldset>
@@ -109,4 +108,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default ResetPassword;

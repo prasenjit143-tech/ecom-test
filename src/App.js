@@ -15,6 +15,7 @@ import OrderDetails from "./Pages/OrderDetails";
 import Login from "./Component/Auth/Login";
 import Register from "./Component/Auth/Register";
 import Forget_pass from "./Component/Auth/Forget-pass";
+import ResetPassword from "./Component/Auth/ResetPassword";
 import Profile from "./Component/Dashboard/Profile";
 
 import { AuthProvider } from "./Context/AuthContext";
@@ -43,7 +44,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/forgot-password" element={<Forget_pass />} />
-            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
           </Routes>
           <Footer />
         </BrowserRouter>

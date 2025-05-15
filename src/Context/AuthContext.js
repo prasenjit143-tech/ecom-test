@@ -5,13 +5,14 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
   const [userInfo, setUserInfo] = useState(null);
+  const [message, setMessage] = useState(null);
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
     if (storedToken) {
       getUser(storedToken);
     }
-  }, []);
+  }, [message]);
 
   const getUser = async (token) => {
     try {
@@ -33,7 +34,9 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, userInfo }}>
+    <AuthContext.Provider
+      value={{ isAuthenticated, userInfo, message, setMessage }}
+    >
       {children}
     </AuthContext.Provider>
   );

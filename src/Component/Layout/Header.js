@@ -1,8 +1,16 @@
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../../Context/AuthContext";
+import { FaSignOutAlt } from "react-icons/fa";
 
 function Header() {
-  const { isAuthenticated, userInfo } = useAuth();
+  const navigate = useNavigate();
+  const { isAuthenticated, userInfo, setMessage } = useAuth();
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setMessage("Logout successful!");
+    navigate("/login"); // Redirect to login page after logout
+  };
   return (
     <>
       {/* header section strats */}
@@ -155,18 +163,31 @@ function Header() {
                 </form>
                 <li className="nav-item">
                   {isAuthenticated ? (
-                    <div className="nav-link profile-link d-flex align-items-center">
-                      Welcome {userInfo.name}
-                      <img
-                        src={userInfo.profilePic} // replace with the actual profile image URL
-                        alt="DP"
-                        className="profile-image"
-                      />
-                    </div>
+                    <>
+                      <Link
+                        to={"/profile"}
+                        className="nav-link profile-link d-flex align-items-center"
+                      >
+                        Welcome {userInfo.name}
+                        <img
+                          src={userInfo.profilePic} // replace with the actual profile image URL
+                          alt="DP"
+                          className="profile-image"
+                        />
+                      </Link>
+                    </>
                   ) : (
                     <Link className="nav-link" to="/login">
                       Login
                     </Link>
+                  )}
+                </li>
+                <li className="nav-item">
+                  {isAuthenticated && (
+                    <FaSignOutAlt
+                      className="logout-icon"
+                      onClick={handleLogout}
+                    />
                   )}
                 </li>
               </ul>
